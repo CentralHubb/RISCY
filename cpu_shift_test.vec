@@ -1,0 +1,90 @@
+; CPU test 1 T-18 hours
+
+; enable wav
+output_wf 1
+
+; radix for num bits
+radix 1 1 1 1 1 3 4 4 4 4 1 1 1
+
+; vname for names
+vname phi1 phi2 instr<0> instr<1> instr<2> instr<[3:5]> bus<[0:3]> bus<[4:7]> bus<[0:3]> bus<[4:7]> loadbus storebus overflow
+
+; IO spec direction
+io i i i i i i i i o o o o o
+
+; Tunit time unit
+tunit 10ps
+
+; chk_window is sim time
+chk_window -99 100 1 period=100
+
+; period is period
+period 100
+
+; trise tfall rise and fall
+trise 2
+tfall 2
+
+; vih vil are rails
+vih 1.0
+vil 0.0
+
+; voh and vol are bounds for binary output
+voh 0.7
+vol 0.5
+
+; idelay to apply negative delay to control signals
+; to fix memory simul read write issue
+; idelay applaies delay to masked variables
+idelay -40.0 0 0 111 7 00 00 0 0 0
+
+; vector data
+; write 254 to add 0
+0 1 001 0 FE XX 1 0 X
+1 0 001 0 FE XX 1 0 X
+0 1 001 0 FE XX 1 0 X
+
+; read addr 0
+1 0 010 0 ZZ XX 0 1 X
+0 1 010 0 ZZ FE 0 1 X
+
+; get addr 0
+1 0 011 0 ZZ XX 0 0 X
+0 1 011 0 ZZ XX 0 0 X
+
+; write 64 to addr 1
+1 0 001 1 40 XX 1 0 X
+0 1 001 1 40 XX 1 0 X
+
+; read addr 1
+1 0 010 1 ZZ XX 0 1 X
+0 1 010 1 ZZ 40 0 1 X
+
+; get addr 1
+1 0 011 1 ZZ XX 0 0 X
+0 1 011 1 ZZ XX 0 0 X
+
+; shift acc by 1
+1 0 111 1 ZZ XX 0 0 X
+0 1 111 1 ZZ XX 0 0 X
+
+; sub addr 1 from acc
+; 1 0 110 1 ZZ XX 0 0 X
+; 0 1 110 1 ZZ XX 0 0 X
+
+; put acc to addr 2
+1 0 100 2 ZZ XX 0 0 X
+0 1 100 2 ZZ XX 0 0 X
+
+; read addr 2
+1 0 010 2 ZZ XX 0 1 X
+0 1 010 2 ZZ 80 0 1 X
+
+; nop
+1 0 000 0 ZZ XX 0 0 X
+0 1 000 0 ZZ XX 0 0 X
+
+; read add 2
+1 0 010 2 ZZ XX 0 1 X
+0 1 010 2 ZZ 80 0 1 X
+
